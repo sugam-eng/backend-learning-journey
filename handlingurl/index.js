@@ -10,7 +10,7 @@ const myserver=http.createServer((req,res)=>{
             break
         case "/about":
             const qp=myurl.query.myname // just pass true in line 5, this creates query object with keys from url keys and values from url value
-            res.end(`hi ${qp}`) // assume my url is localhost:8000/about?myname=sugam&userid=1
+            res.end(`hi ${qp}`) // assume your url is localhost:8000/about?myname=sugam&userid=1
             break
 
         //for example in youtube
