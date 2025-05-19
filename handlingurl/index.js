@@ -17,6 +17,15 @@ const myserver=http.createServer((req,res)=>{
         case "/search":
             const search=myurl.query.search_query
             res.end("here are your results for"+search) //assuming yt url as ..../search?search_query=trending+news
+        //Handling HTTP methods
+        case "/signup":
+            if (req.method==='GET') res.end('this is signup form')
+            else if(req.method==='POST'){
+                //DB Query
+                res.end("Success"); 
+            }
+            //in production we will have many cases and hence many if else conditions. its difficult to handle
+            //so we use express framework to manage this
         default:
             res.end("404 end")
     }
