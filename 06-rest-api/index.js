@@ -21,10 +21,16 @@ app.get("/users", (req,res)=>{
     res.send(html)
 })//hybrid server sends html data if path is /users, sends json data if path is /api/users
 
-app.get("/api/users/:id",(req,res)=>{
+app.route("/api/users/:id").get((req,res)=>{
     const id=Number(req.params.id)          //req.params.id gives string
     const user=users.find((user)=>user.id===id)
     return res.json(user)
+}).patch((req,res)=>{
+    //todo - update new user with id
+    return res.json({status:"pending"})
+}).delete((req,res)=>{
+    //todo - delete new user with id
+    return res.json({status:"pending"})
 })
 
 //browser sends only get requests,not POST, PATCH, DELETE
@@ -34,14 +40,8 @@ app.post("/api/users", (req,res)=>{
     return res.json({status:"pending"})
 })
 
-app.patch("/api/users/:id", (req,res)=>{
-    //todo - update new user with id
-    return res.json({status:"pending"})
-})
+// app.patch("/api/users/:id", )    all path is merged with the help of route
 
-app.delete("/api/users/:id", (req,res)=>{
-    //todo - delete new user with id
-    return res.json({status:"pending"})
-})
+// app.delete("/api/users/:id", )
 
 app.listen(port,()=>console.log(`server started at port: ${port}`))
