@@ -21,4 +21,10 @@ app.get("/users", (req,res)=>{
     res.send(html)
 })//hybrid server sends html data if path is /users, sends json data if path is /api/users
 
+app.get("/api/users/:id",(req,res)=>{
+    const id=Number(req.params.id)          //req.params.id gives string
+    const user=users.find((user)=>user.id===id)
+    return res.json(user)
+})
+
 app.listen(port,()=>console.log(`server started at port: ${port}`))
