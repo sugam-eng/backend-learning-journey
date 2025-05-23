@@ -39,7 +39,7 @@ app.patch("/api/users/:id", (req,res)=>{
     return res.json({status:"pending"})
 })
 
-app.delete("/api/users", (req,res)=>{
+app.delete("/api/users/:id", (req,res)=>{
     //todo - delete new user with id
     return res.json({status:"pending"})
 })
