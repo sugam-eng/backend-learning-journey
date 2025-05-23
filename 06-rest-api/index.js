@@ -27,4 +27,21 @@ app.get("/api/users/:id",(req,res)=>{
     return res.json(user)
 })
 
+//browser sends only get requests,not POST, PATCH, DELETE
+//we are just defining paths
+app.post("/api/users", (req,res)=>{
+    //todo - create new user
+    return res.json({status:"pending"})
+})
+
+app.patch("/api/users/:id", (req,res)=>{
+    //todo - update new user with id
+    return res.json({status:"pending"})
+})
+
+app.delete("/api/users", (req,res)=>{
+    //todo - delete new user with id
+    return res.json({status:"pending"})
+})
+
 app.listen(port,()=>console.log(`server started at port: ${port}`))
