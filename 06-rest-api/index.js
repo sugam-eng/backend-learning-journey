@@ -6,6 +6,9 @@ const users=require('./MOCK_DATA.json')
 const app=express()
 const port=8000;
 
+//middleware
+app.use(express.urlencoded({extended:false}))
+
 //routes
 app.get("/api/users", (req,res)=>{
     return res.json(users)
@@ -43,5 +46,7 @@ app.post("/api/users", (req,res)=>{
 // app.patch("/api/users/:id", )    all path is merged with the help of route
 
 // app.delete("/api/users/:id", )
+
+//some form data is sent in browser and we need to receive that data, that is done with the help of middlewares
 
 app.listen(port,()=>console.log(`server started at port: ${port}`))
