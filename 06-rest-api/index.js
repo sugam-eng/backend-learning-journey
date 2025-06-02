@@ -39,6 +39,9 @@ app.route("/api/users/:id").get((req,res)=>{
 //browser sends only get requests,not POST, PATCH, DELETE
 //we are just defining paths
 app.post("/api/users", (req,res)=>{
+
+    const body=req.body
+    console.log("body", body)
     //todo - create new user
     return res.json({status:"pending"})
 })
