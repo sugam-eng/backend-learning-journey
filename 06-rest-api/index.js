@@ -5,6 +5,7 @@ const express=require('express')
 const users=require('./MOCK_DATA.json')
 const app=express()
 const port=8000;
+const fs=require("fs")//modifying mockdata using new data sent from the browser
 
 //middleware
 app.use(express.urlencoded({extended:false}))
@@ -42,8 +43,15 @@ app.post("/api/users", (req,res)=>{
 
     const body=req.body
     console.log("body", body)
+    users.push({...body, id: users.length+1})
+    fs.writeFile ('./MOCK_DATA.json', JSON.stringify(users),(err,data)=>{
+
+         return res.json({status:"pending",id:users.length})
+    })
+
+
     //todo - create new user
-    return res.json({status:"pending"})
+   
 })
 
 // app.patch("/api/users/:id", )    all path is merged with the help of route
