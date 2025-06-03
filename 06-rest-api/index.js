@@ -31,10 +31,35 @@ app.route("/api/users/:id").get((req,res)=>{
     return res.json(user)
 }).patch((req,res)=>{
     //todo - update new user with id
-    return res.json({status:"pending"})
+    const id=Number(req.params.id)
+    const index = users.findIndex((user) => user.id === id);
+    console.log(index)
+   if (index === -1) return res.status(404).json({ error: "User not found" });//If the user with ID 503 doesn't exist, send 404 Not Found response.
+    const updatedUser = { ...users[index], ...req.body };//Merges the old user object with the new data from the request body using the spread operator.
+    users[index] = updatedUser;
+
+    fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
+    if (err) return res.status(500).json({ status: "error", error: err });   
+    return res.json({ status: "success", updatedUser });
+});
+
+
+    
+    
 }).delete((req,res)=>{
     //todo - delete new user with id
-    return res.json({status:"pending"})
+    const id = Number(req.params.id);
+        const index = users.findIndex((user) => user.id === id);
+
+        if (index === -1) return res.status(404).json({ error: "User not found" });
+
+        // Remove user
+        users.splice(index, 1);
+
+        fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
+            if (err) return res.status(500).json({ status: "error", error: err });
+            return res.json({ status: "success", message: `User with id ${id} deleted.` });
+        })
 })
 
 //browser sends only get requests,not POST, PATCH, DELETE
@@ -46,7 +71,7 @@ app.post("/api/users", (req,res)=>{
     users.push({...body, id: users.length+1})
     fs.writeFile ('./MOCK_DATA.json', JSON.stringify(users),(err,data)=>{
 
-         return res.json({status:"pending",id:users.length})
+         return res.json({status:"success",id:users.length})
     })
 
 
