@@ -5,10 +5,30 @@ const express=require('express')
 const users=require('./MOCK_DATA.json')
 const app=express()
 const port=8000;
-const fs=require("fs")//modifying mockdata using new data sent from the browser
+const fs=require("fs");//modifying mockdata using new data sent from the browser
+const { nextTick } = require('process');
 
-//middleware
+// Middleware to parse form data (urlencoded)
 app.use(express.urlencoded({extended:false}))
+
+// Middleware to log request method and URL
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  //we can also modify the req, res objects
+  req.name="sugam"
+  next(); // Move to the next middleware or route
+});
+
+app.use((req,res,next)=>{
+    console.log("hello from middleware 2",req.name)   //req.name is available everywhere
+    fs.appendFile("log.txt",`\n${Date.now()}: ${req.ip}: ${req.method}:${req.path}`,//created middleware which creates logfile containing all the info
+    (err,data)=>{
+        next();
+    } 
+) 
+})
+
+
 
 //routes
 app.get("/api/users", (req,res)=>{
