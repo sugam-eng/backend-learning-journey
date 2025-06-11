@@ -28,10 +28,12 @@ app.use((req,res,next)=>{
 ) 
 })
 
-
-
 //routes
 app.get("/api/users", (req,res)=>{
+    //http headers
+    console.log(req.headers); // logs incoming headers
+    res.setHeader("X-Custom-Header", "Sugam"); // setting a custom header
+
     return res.json(users)
 })
 //but we should build server that should be hybrid in nature. i.e our server should send json data for mobile applications and html data for browser.
