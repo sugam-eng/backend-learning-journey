@@ -11,6 +11,9 @@ const { nextTick } = require('process');
 // Middleware to parse form data (urlencoded)
 app.use(express.urlencoded({extended:false}))
 
+app.use(express.json());
+
+
 // Middleware to log request method and URL
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
@@ -21,11 +24,12 @@ app.use((req, res, next) => {
 
 app.use((req,res,next)=>{
     console.log("hello from middleware 2",req.name)   //req.name is available everywhere
-    fs.appendFile("log.txt",`\n${Date.now()}: ${req.ip}: ${req.method}:${req.path}`,//created middleware which creates logfile containing all the info
-    (err,data)=>{
-        next();
-    } 
-) 
+    fs.appendFile("log.txt",`\n${Date.now()}: ${req.ip}: ${req.method}:${req.path}`,(err)=>{//created middleware which creates logfile containing all the info
+    if (err) {
+      console.error("Error writing to log file:", err);
+    }
+    next();
+}) 
 })
 
 //routes
@@ -89,16 +93,19 @@ app.route("/api/users/:id").get((req,res)=>{
 app.post("/api/users", (req,res)=>{
 
     const body=req.body
-    console.log("body", body)
+    console.log("body:", body);
+    console.log("first_name present?", "first_name" in body);
+    console.log("first_name value:", body.first_name);
+    if(!body || !body.first_name){
+        return res.status(400).json({msg:"firstname is compulsory"})
+    }
     users.push({...body, id: users.length+1})
     fs.writeFile ('./MOCK_DATA.json', JSON.stringify(users),(err,data)=>{
 
          return res.status(201).json({status:"success",id:users.length}) // added new status code for creating new data
     })
-
-
     //todo - create new user
-   
+
 })
 
 // app.patch("/api/users/:id", )    all path is merged with the help of route
