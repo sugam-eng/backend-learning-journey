@@ -2,3 +2,5 @@
 1749655830090: ::1: POST:/api/users
 1749655859427: ::1: GET:/api/users
 1749655883058: ::1: PATCH:/api/users
+1749661199028: ::1: PATCH:/api/users
+1749661213120: ::1: GET:/api/users

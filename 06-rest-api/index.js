@@ -93,7 +93,7 @@ app.post("/api/users", (req,res)=>{
     users.push({...body, id: users.length+1})
     fs.writeFile ('./MOCK_DATA.json', JSON.stringify(users),(err,data)=>{
 
-         return res.json({status:"success",id:users.length})
+         return res.status(201).json({status:"success",id:users.length}) // added new status code for creating new data
     })
 
 
