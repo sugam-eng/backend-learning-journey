@@ -89,22 +89,20 @@ app.route("/api/users/:id").get((req,res)=>{
 })
 
 //browser sends only get requests,not POST, PATCH, DELETE
-//we are just defining paths
+
 app.post("/api/users", (req,res)=>{
 
     const body=req.body
     console.log("body:", body);
-    console.log("first_name present?", "first_name" in body);
     console.log("first_name value:", body.first_name);
     if(!body || !body.first_name){
         return res.status(400).json({msg:"firstname is compulsory"})
     }
     users.push({...body, id: users.length+1})
     fs.writeFile ('./MOCK_DATA.json', JSON.stringify(users),(err,data)=>{
-
-         return res.status(201).json({status:"success",id:users.length}) // added new status code for creating new data
+        return res.status(201).json({status:"success",id:users.length}) // added new status code for creating new data
     })
-    //todo - create new user
+   
 
 })
 

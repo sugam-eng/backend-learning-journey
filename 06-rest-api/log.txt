@@ -49,3 +49,9 @@
 1749719424308: ::1: POST:/api/users
 1749719468270: ::1: POST:/api/users
 1749719504787: ::1: POST:/api/users
+1749720624921: ::1: POST:/api/users
+1749720641351: ::1: POST:/api/users
+1749727043822: ::1: GET:/api/users
+1749727078766: ::1: POST:/api/users
+1749727091517: ::1: POST:/api/users
+1749727098631: ::1: GET:/api/users
