@@ -2,11 +2,42 @@
 //install express
 
 const express=require('express')
+const mongoose = require("mongoose")
 const users=require('./MOCK_DATA.json')
 const app=express()
 const port=8000;
 const fs=require("fs");//modifying mockdata using new data sent from the browser
-const { nextTick } = require('process');
+// const { nextTick } = require('process');
+
+
+//schema
+const userSchema = new mongoose.Schema({
+    firstName:{
+        type:String,
+        required : true,
+    },
+    lastName:{
+        type:String,
+    
+    },
+    email:{
+        type: string,
+        required: true,
+        unique: true,
+    }
+
+}
+
+)
+//after schema i need to create model
+const User= mongoose.model('user', userSchema)
+
+//connection
+mongoose.connect("mongodb://127.0.0.1:27017/insta-app-1")
+.then(()=>console.log("MongoDB Connected"))
+.catch((err)=>console.log("Mongo error", err));
+
+
 
 // Middleware to parse form data (urlencoded)
 app.use(express.urlencoded({extended:false}))
