@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     
     },
     email:{
-        type: string,
+        type: String,
         required: true,
         unique: true,
     }
@@ -121,7 +121,7 @@ app.route("/api/users/:id").get((req,res)=>{
 
 //browser sends only get requests,not POST, PATCH, DELETE
 
-app.post("/api/users", (req,res)=>{
+app.post("/api/users", async(req,res)=>{
 
     const body=req.body
     console.log("body:", body);
@@ -129,12 +129,14 @@ app.post("/api/users", (req,res)=>{
     if(!body || !body.first_name){
         return res.status(400).json({msg:"firstname is compulsory"})
     }
-    users.push({...body, id: users.length+1})
-    fs.writeFile ('./MOCK_DATA.json', JSON.stringify(users),(err,data)=>{
-        return res.status(201).json({status:"success",id:users.length}) // added new status code for creating new data
+    
+    const result = await User.create({
+        firstName: body.first_name,
+        lastName: body.last_name,
+        email: body.email,
     })
-   
-
+   console.log(result)
+    return res.status(201).json('succesfully added')
 })
 
 // app.patch("/api/users/:id", )    all path is merged with the help of route

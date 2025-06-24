@@ -55,3 +55,4 @@
 1749727078766: ::1: POST:/api/users
 1749727091517: ::1: POST:/api/users
 1749727098631: ::1: GET:/api/users
+1750758527451: ::1: POST:/api/users
