@@ -3,7 +3,7 @@
 
 const express=require('express')
 const mongoose = require("mongoose")
-const users=require('./MOCK_DATA.json')
+// const users=require('./MOCK_DATA.json')
 const app=express()
 const port=8000;
 const fs=require("fs");//modifying mockdata using new data sent from the browser
@@ -64,59 +64,37 @@ app.use((req,res,next)=>{
 })
 
 //routes
-app.get("/api/users", (req,res)=>{
-    //http headers
-    console.log(req.headers); // logs incoming headers
-    res.setHeader("X-Custom-Header", "Sugam"); // setting a custom header
+app.get("/api/users", async(req,res)=>{
+    const allDbUsers = await User.find({})
 
-    return res.json(users)
+    return res.json(allDbUsers)
 })
 //but we should build server that should be hybrid in nature. i.e our server should send json data for mobile applications and html data for browser.
 
-app.get("/users", (req,res)=>{
+app.get("/users", async(req,res)=>{
+    const allDbUsers = await User.find({})
     const html=`
     <ul>
-    ${users.map((user)=>`<li>${user.first_name}</li>`).join("")}
+    ${allDbUsers.map((user)=>`<li>${user.firstName} - ${user.email}</li>`).join("")}
     </ul>
     `
     res.send(html)
 })//hybrid server sends html data if path is /users, sends json data if path is /api/users
 
-app.route("/api/users/:id").get((req,res)=>{
-    const id=Number(req.params.id)          //req.params.id gives string
-    const user=users.find((user)=>user.id===id)
+app.route("/api/users/:id").get(async(req,res)=>{
+    
+    const user = await User.findById(req.params.id)
     return res.json(user)
-}).patch((req,res)=>{
-    //todo - update new user with id
-    const id=Number(req.params.id)
-    const index = users.findIndex((user) => user.id === id);
-    console.log(index)
-   if (index === -1) return res.status(404).json({ error: "User not found" });//If the user with ID 503 doesn't exist, send 404 Not Found response.
-    const updatedUser = { ...users[index], ...req.body };//Merges the old user object with the new data from the request body using the spread operator.
-    users[index] = updatedUser;
-
-    fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
-    if (err) return res.status(500).json({ status: "error", error: err });   
-    return res.json({ status: "success", updatedUser });
-});
-
-
+}).patch(async(req,res)=>{
+    await User.findByIdAndUpdate(req.params.id, {lastName: 'changed'})
+    return res.json({status:'success'})
     
     
-}).delete((req,res)=>{
+}).delete(async(req,res)=>{
     //todo - delete new user with id
-    const id = Number(req.params.id);
-        const index = users.findIndex((user) => user.id === id);
-
-        if (index === -1) return res.status(404).json({ error: "User not found" });
-
-        // Remove user
-        users.splice(index, 1);
-
-        fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err) => {
-            if (err) return res.status(500).json({ status: "error", error: err });
-            return res.json({ status: "success", message: `User with id ${id} deleted.` });
-        })
+    await User.findByIdAndDelete(req.params.id)
+    res.json({status:'success'})
+    
 })
 
 //browser sends only get requests,not POST, PATCH, DELETE
