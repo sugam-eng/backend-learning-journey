@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
         unique: true,
     }
 
-}
+}, {timestamps: true}
 
 )
 //after schema i need to create model
